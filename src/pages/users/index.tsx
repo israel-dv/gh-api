@@ -17,12 +17,9 @@ const UsersPage: React.FC = () => {
   const [total, setTotal] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
 
-  console.log(url)
-
   React.useEffect(() => {
     if (url === '') {
       router.push('/')
-      console.log('Entro aqui')
     } else {
       setLoading(true)
       axios.get(url).then((response) => {
