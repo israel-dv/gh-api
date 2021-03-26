@@ -4,26 +4,29 @@ import router from 'next/router'
 import { SearchContext } from 'src/utils/providers/searcher'
 import { URI } from 'src/api/client'
 import { TITLE } from 'src/pages/_app'
+import { useLocalStorage } from 'src/utils/hooks/useLocalStorage'
 
 const BUTTON_PLACEHOLDER = 'Search'
 
 const Navbar: React.FC = () => {
-  const { typeToSearch, setUrl } = React.useContext(SearchContext)
+  const { typeToSearch, setSearch } = React.useContext(SearchContext)
   const [searcher, setSearcher] = React.useState('')
+  const [storage, setStorage] = useLocalStorage('searcher', '')
 
   React.useEffect(() => {
     if (searcher) {
-      setUrl(`${URI}/${typeToSearch}?q=${searcher}`)
+      setSearch(`${storage}`)
     }
   }, [typeToSearch])
 
   const handleChange = (event) => {
-    setSearcher(event.target.value)
+    const { value } = event.target
+    setSearcher(value)
   }
 
   const requestData = () => {
     if (searcher !== '') {
-      setUrl(`${URI}/${typeToSearch}?q=${searcher}`)
+      setSearch(`${searcher}`)
       router.push(`/${typeToSearch}`)
     }
   }
@@ -31,7 +34,8 @@ const Navbar: React.FC = () => {
   const keyPressed = (event) => {
     if (event.which === 13) {
       if (searcher !== '') {
-        setUrl(`${URI}/${typeToSearch}?q=${searcher}`)
+        setStorage(searcher)
+        setSearch(searcher)
         router.push(`/${typeToSearch}`)
       }
     }

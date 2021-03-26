@@ -1,5 +1,5 @@
 import React from 'react'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import axios from 'axios'
 
 import Switch from 'src/components/Switch'
@@ -8,28 +8,28 @@ import { RepoProperties } from 'src/utils/interfaces/repoInterface'
 import { Card } from 'src/components/Card'
 import Total from 'src/components/Total'
 import Spinner from 'src/components/Spinner'
+import { URI } from 'src/api/client'
+import { useLocalStorage } from 'src/utils/hooks/useLocalStorage'
 
 const TOTAL = 'Total repositories found'
 
 const RepositoriesPage: React.FC = () => {
-  const { url } = React.useContext(SearchContext)
+  const { pathname } = useRouter()
+  const { search } = React.useContext(SearchContext)
+
   const [repos, setRepos] = React.useState((): Array<RepoProperties> => [])
   const [totalRepos, setTotalRepos] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
+  const [storage] = useLocalStorage('searcher', '')
 
   React.useEffect(() => {
-    if (url === '') {
-      router.push('/')
-      console.log('Entro aqui')
-    } else {
-      setLoading(true)
-      axios.get(url).then((response) => {
-        setLoading(false)
-        setRepos(response.data.items)
-        setTotalRepos(response.data?.['total_count'])
-      })
-    }
-  }, [url])
+    setLoading(true)
+    axios.get(`${URI}${pathname}?q=${search || storage}`).then((response) => {
+      setLoading(false)
+      setRepos(response.data.items)
+      setTotalRepos(response.data?.['total_count'])
+    })
+  }, [search])
 
   return (
     <div className="container d-flex flex-column">
@@ -37,13 +37,7 @@ const RepositoriesPage: React.FC = () => {
         <Switch />
         <Total text={TOTAL} total={totalRepos} />
       </div>
-      <div
-        className={`d-flex row row-cols-2 row-cols-lg-5 g-2 g-lg-3 ${
-          loading
-            ? 'align-item-center justify-content-center'
-            : 'justify-content-between'
-        }`}
-      >
+      <div className="d-flex row row-cols-2 row-cols-lg-5 g-2 g-lg-3 align-item-center justify-content-center">
         {loading ? (
           <Spinner />
         ) : (

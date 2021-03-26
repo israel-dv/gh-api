@@ -2,6 +2,7 @@ import React from 'react'
 import { useRouter } from 'next/router'
 
 import { SearchContext } from '../../utils/providers/searcher'
+import { useLocalStorage } from 'src/utils/hooks/useLocalStorage'
 
 const SWITCH_OPTIONS = {
   firstOption: {
@@ -17,11 +18,14 @@ const SWITCH_OPTIONS = {
 const Switch: React.FC = () => {
   const { push: pushToPage } = useRouter()
   const { typeToSearch, setTypeToSearch } = React.useContext(SearchContext)
+  const [, setStorage] = useLocalStorage('path', '')
 
   const handleChange = (event) => {
-    const typeToSearch = event.target.value
-    setTypeToSearch(typeToSearch)
-    pushToPage(typeToSearch)
+    const { value } = event.target
+    console.log(value)
+    setTypeToSearch(value)
+    pushToPage(value)
+    setStorage(value)
   }
 
   return (
