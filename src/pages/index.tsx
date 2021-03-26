@@ -24,7 +24,7 @@ export default function Home(): React.ReactElement {
   return (
     <div className="container d-flex flex-column align-items-center">
       <h1 className="text-light mb-5">GitHub-API project NextJS</h1>
-      <div className="d-flex justify-content-between row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+      <div className="d-flex row row-cols-2 row-cols-lg-5 g-2 g-lg-3 align-item-center justify-content-center">
         {loading ? (
           <Spinner />
         ) : (
