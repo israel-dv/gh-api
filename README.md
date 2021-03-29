@@ -13,7 +13,7 @@ GitHub API is a NextJS project. This project was created to improve, learn and p
 - [Boostrap 5 9v.5.0.0-beta3](https://getbootstrap.com/)
 - [GitHub API v.5](https://docs.github.com/en/rest)
 
-⚠️ Bootsrap was installed/used via CDN to do the app more light
+⚠️ Bootsrap was installed/used via CDN to make the app lighter
 
 ## Getting started
 
